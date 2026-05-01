@@ -1,0 +1,105 @@
+src/USBHostPrinter.cpp: In member function 'bool USBHostPrinter::begin()':
+src/USBHostPrinter.cpp:40:5: error: invalid conversion from 'void (*)(usb_host_client_event_msg_t*, void*)' to 'usb_host_client_event_cb_t' {aka 'void (*)(const usb_host_client_event_msg_t*, void*)'} [-fpermissive]
+     };
+     ^
+src/USBHostPrinter.cpp: In member function 'void USBHostPrinter::handleEvents()':
+src/USBHostPrinter.cpp:56:33: error: too few arguments to function 'esp_err_t usb_host_lib_handle_events(TickType_t, uint32_t*)'
+     usb_host_lib_handle_events(1);
+                                 ^
+In file included from include/USBHostPrinter.h:5,
+                 from src/USBHostPrinter.cpp:1:
+C:/Users/rap/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/usb/include/usb/usb_host.h:169:11: note: declared here
+ esp_err_t usb_host_lib_handle_events(TickType_t timeout_ticks, uint32_t *event_flags_ret);
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~
+src/USBHostPrinter.cpp: In member function 'bool USBHostPrinter::_claimPrinterInterface()':
+src/USBHostPrinter.cpp:87:5: error: 'usb_host_get_device_desc' was not declared in this scope
+     usb_host_get_device_desc(_dev_hdl, &dev_desc);
+     ^~~~~~~~~~~~~~~~~~~~~~~~
+In file included from src/PrinterManager.cpp:1:
+include/PrinterManager.h:24:9: error: 'Adafruit_Thermal' does not name a type
+         Adafruit_Thermal* _serialPrinter;
+         ^~~~~~~~~~~~~~~~
+src/PrinterManager.cpp: In constructor 'PrinterManager::PrinterManager()':
+src/PrinterManager.cpp:4:5: error: '_serialPrinter' was not declared in this scope
+     _serialPrinter = nullptr;
+     ^~~~~~~~~~~~~~
+src/PrinterManager.cpp:4:5: note: suggested alternative: '_usbPrinter'
+     _serialPrinter = nullptr;
+     ^~~~~~~~~~~~~~
+     _usbPrinter
+src/PrinterManager.cpp: In member function 'bool PrinterManager::begin(int, long int, int, int)':
+src/PrinterManager.cpp:24:9: error: '_serialPrinter' was not declared in this scope
+         _serialPrinter = new Adafruit_Thermal(&Serial2);
+         ^~~~~~~~~~~~~~
+src/PrinterManager.cpp:24:9: note: suggested alternative: '_usbPrinter'
+         _serialPrinter = new Adafruit_Thermal(&Serial2);
+         ^~~~~~~~~~~~~~
+         _usbPrinter
+src/PrinterManager.cpp:24:30: error: expected type-specifier before 'Adafruit_Thermal'
+         _serialPrinter = new Adafruit_Thermal(&Serial2);
+                              ^~~~~~~~~~~~~~~~
+src/PrinterManager.cpp: In member function 'void PrinterManager::_sendRaw(const uint8_t*, size_t)':
+src/PrinterManager.cpp:41:16: error: '_serialPrinter' was not declared in this scope
+     } else if (_serialPrinter != nullptr) {
+                ^~~~~~~~~~~~~~
+src/USBHostPrinter.cpp:87:5: note: suggested alternative: 'usb_host_get_device_descriptor'
+     usb_host_get_device_desc(_dev_hdl, &dev_desc);
+     ^~~~~~~~~~~~~~~~~~~~~~~~
+     usb_host_get_device_descriptor
+src/USBHostPrinter.cpp:90:5: error: 'usb_host_get_active_config_desc' was not declared in this scope
+     usb_host_get_active_config_desc(_dev_hdl, &config_desc);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/PrinterManager.cpp:41:16: note: suggested alternative: '_usbPrinter'
+     } else if (_serialPrinter != nullptr) {
+                ^~~~~~~~~~~~~~
+                _usbPrinter
+src/PrinterManager.cpp: In member function 'void PrinterManager::printTicket(String, String, float, int)':
+src/PrinterManager.cpp:51:30: error: '_serialPrinter' was not declared in this scope
+     if (_printerType == 0 && _serialPrinter != nullptr) {
+                              ^~~~~~~~~~~~~~
+src/USBHostPrinter.cpp:90:5: note: suggested alternative: 'usb_host_get_active_config_descriptor'
+     usb_host_get_active_config_desc(_dev_hdl, &config_desc);
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     usb_host_get_active_config_descriptor
+src/USBHostPrinter.cpp:102:43: error: 'usb_parse_endpoint_descriptor' was not declared in this scope
+                 const usb_ep_desc_t *ep = usb_parse_endpoint_descriptor(config_desc, intf->bInterfaceNumber, 0, i, &offset);
+                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/PrinterManager.cpp:51:30: note: suggested alternative: '_usbPrinter'
+     if (_printerType == 0 && _serialPrinter != nullptr) {
+                              ^~~~~~~~~~~~~~
+                              _usbPrinter
+src/PrinterManager.cpp: In member function 'void PrinterManager::testPrint()':
+src/PrinterManager.cpp:147:37: error: '_serialPrinter' was not declared in this scope
+     } else if (_printerType == 0 && _serialPrinter != nullptr) {
+                                     ^~~~~~~~~~~~~~
+src/USBHostPrinter.cpp:102:43: note: suggested alternative: 'usb_parse_next_descriptor'
+                 const usb_ep_desc_t *ep = usb_parse_endpoint_descriptor(config_desc, intf->bInterfaceNumber, 0, i, &offset);
+                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                           usb_parse_next_descriptor
+src/USBHostPrinter.cpp:104:88: error: 'USB_B_ENDPOINT_ADDRESS_EP_DIR_OUT' was not declared in this scope
+                     if ((ep->bEndpointAddress & USB_B_ENDPOINT_ADDRESS_EP_DIR_MASK) == USB_B_ENDPOINT_ADDRESS_EP_DIR_OUT) {
+                                                                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+src/PrinterManager.cpp:147:37: note: suggested alternative: '_usbPrinter'
+     } else if (_printerType == 0 && _serialPrinter != nullptr) {
+                                     ^~~~~~~~~~~~~~
+                                     _usbPrinter
+src/USBHostPrinter.cpp:104:88: note: suggested alternative: 'USB_B_ENDPOINT_ADDRESS_EP_DIR_MASK'
+                     if ((ep->bEndpointAddress & USB_B_ENDPOINT_ADDRESS_EP_DIR_MASK) == USB_B_ENDPOINT_ADDRESS_EP_DIR_OUT) {
+                                                                                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                                                                        USB_B_ENDPOINT_ADDRESS_EP_DIR_MASK
+*** [.pio\build\esp32-s3-devkitc-1\src\PrinterManager.cpp.o] Error 1
+*** [.pio\build\esp32-s3-devkitc-1\src\USBHostPrinter.cpp.o] Error 1
+In file included from include/WebManager.h:11,
+                 from src/main.cpp:5:
+include/PrinterManager.h:24:9: error: 'Adafruit_Thermal' does not name a type; did you mean 'Adafruit_I2CDevice'?
+         Adafruit_Thermal* _serialPrinter;
+         ^~~~~~~~~~~~~~~~
+         Adafruit_I2CDevice
+In file included from include/WebManager.h:11,
+                 from src/WebManager.cpp:1:
+include/PrinterManager.h:24:9: error: 'Adafruit_Thermal' does not name a type; did you mean 'Adafruit_I2CDevice'?
+         Adafruit_Thermal* _serialPrinter;
+         ^~~~~~~~~~~~~~~~
+         Adafruit_I2CDevice
+*** [.pio\build\esp32-s3-devkitc-1\src\main.cpp.o] Error 1
+*** [.pio\build\esp32-s3-devkitc-1\src\WebManager.cpp.o] Error 1

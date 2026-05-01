@@ -58,8 +58,14 @@ void setup() {
   }
 
   // 3. Inisialisasi Printer
-  if (printer.begin(115200, PRINTER_RX, PRINTER_TX)) {
-    Serial.println("Printer: Ready (Serial2 @ 115200)");
+  int pType = configManager.getConfig().printerType;
+  int pSize = configManager.getConfig().paperSize;
+  if (printer.begin(pType, pSize, 115200, PRINTER_RX, PRINTER_TX)) {
+    Serial.print("Printer: Ready (Mode: ");
+    Serial.print(pType == 1 ? "USB" : "Serial");
+    Serial.print(", Size: ");
+    Serial.print(pSize == 1 ? "80mm" : "58mm");
+    Serial.println(")");
   }
 
 
@@ -79,6 +85,7 @@ void setup() {
 
 void loop() {
   webManager.update(); // Handle DNS requests for Captive Portal
+  printer.update();    // Handle USB Host events
 
   // Update Jam setiap detik
   static unsigned long lastTimeUpdate = 0;

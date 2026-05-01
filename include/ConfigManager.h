@@ -16,6 +16,8 @@ struct AppConfig {
     String gateway;
     String subnet;
     int weightDecimals;
+    int printerType; // 0: Serial, 1: USB
+    int paperSize;   // 0: 58mm, 1: 80mm
     
     // Default values
     AppConfig() : 
@@ -28,7 +30,9 @@ struct AppConfig {
         staticIp("192.168.1.100"),
         gateway("192.168.1.1"),
         subnet("255.255.255.0"),
-        weightDecimals(2)
+        weightDecimals(2),
+        printerType(0),
+        paperSize(0)
     {}
 };
 
@@ -50,6 +54,8 @@ public:
     }
     void setCredentials(String user, String pass) { _config.adminUser = user; _config.adminPass = pass; }
     void setWeightDecimals(int decimals) { _config.weightDecimals = decimals; }
+    void setPrinterType(int type) { _config.printerType = type; }
+    void setPaperSize(int size) { _config.paperSize = size; }
 
 private:
     AppConfig _config;

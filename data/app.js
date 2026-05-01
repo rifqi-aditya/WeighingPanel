@@ -135,6 +135,12 @@ let ws;
                         weightDecimals = data.weightDecimals;
                         document.getElementById('input-decimals').value = data.weightDecimals;
                     }
+                    if (data.printerType !== undefined) {
+                        document.getElementById('input-printer-type').value = data.printerType;
+                    }
+                    if (data.paperSize !== undefined) {
+                        document.getElementById('input-paper-size').value = data.paperSize;
+                    }
                     document.getElementById('input-wifi-ssid').value = data.wifiSsid || '';
                     document.getElementById('input-static-enable').checked = data.useStaticIp;
                     document.getElementById('input-static-ip').value = data.staticIp;
@@ -242,6 +248,8 @@ let ws;
         function saveSettings() {
             const ptName = document.getElementById('input-pt-name').value;
             const decimals = parseInt(document.getElementById('input-decimals').value);
+            const pType = parseInt(document.getElementById('input-printer-type').value);
+            const pSize = parseInt(document.getElementById('input-paper-size').value);
             const status = document.getElementById('save-status');
             status.innerText = "Menyimpan...";
             status.style.color = "var(--text-secondary)";
@@ -249,7 +257,12 @@ let ws;
             fetch('/api/config', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ companyName: ptName, weightDecimals: decimals })
+                body: JSON.stringify({ 
+                    companyName: ptName, 
+                    weightDecimals: decimals, 
+                    printerType: pType,
+                    paperSize: pSize
+                })
             })
                 .then(r => r.json())
                 .then(data => {

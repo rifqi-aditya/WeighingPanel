@@ -43,6 +43,8 @@ bool ConfigManager::load() {
     _config.gateway = doc["gateway"] | "192.168.1.1";
     _config.subnet = doc["subnet"] | "255.255.255.0";
     _config.weightDecimals = doc["weightDecimals"] | 2;
+    _config.printerType = doc["printerType"] | 0;
+    _config.paperSize = doc["paperSize"] | 0;
     
     Serial.print("ConfigManager: Loaded Company Name: ");
     Serial.println(_config.companyName);
@@ -64,6 +66,8 @@ bool ConfigManager::save() {
     doc["gateway"] = _config.gateway;
     doc["subnet"] = _config.subnet;
     doc["weightDecimals"] = _config.weightDecimals;
+    doc["printerType"] = _config.printerType;
+    doc["paperSize"] = _config.paperSize;
 
     File configFile = LittleFS.open(_filename, "w");
     if (!configFile) {

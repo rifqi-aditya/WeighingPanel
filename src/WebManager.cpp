@@ -224,6 +224,8 @@ void WebManager::setupRoutes() {
         doc["gateway"] = _config->getConfig().gateway;
         doc["subnet"] = _config->getConfig().subnet;
         doc["weightDecimals"] = _config->getConfig().weightDecimals;
+        doc["printerType"] = _config->getConfig().printerType;
+        doc["paperSize"] = _config->getConfig().paperSize;
         
         String response;
         serializeJson(doc, response);
@@ -249,6 +251,12 @@ void WebManager::setupRoutes() {
             }
             if (doc["weightDecimals"].is<int>()) {
                 _config->setWeightDecimals(doc["weightDecimals"].as<int>());
+            }
+            if (doc["printerType"].is<int>()) {
+                _config->setPrinterType(doc["printerType"].as<int>());
+            }
+            if (doc["paperSize"].is<int>()) {
+                _config->setPaperSize(doc["paperSize"].as<int>());
             }
             
             if (_config->save()) {
