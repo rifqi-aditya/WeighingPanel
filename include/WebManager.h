@@ -28,6 +28,7 @@ public:
 
     // Broadcast data ke semua client yang terhubung
     void broadcastWeight(float weight);
+    void broadcastCommandData(float gross, float tare, float netto, int state);
     void broadcastSystemStats();
     void setIndicatorStatus(bool online) { _indicatorOnline = online; }
 

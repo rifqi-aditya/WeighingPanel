@@ -29,6 +29,14 @@ void DisplayManager::showWaitingData() {
     _lcd.print("MENUNGGU DATA.. "); // 16 chars to clear the line
 }
 
+void DisplayManager::showCustomLine2(String text) {
+    _lcd.setCursor(0, 1);
+    while(text.length() < 16) {
+        text += " ";
+    }
+    _lcd.print(text.substring(0, 16));
+}
+
 void DisplayManager::showMessage(String line1, String line2) {
     _lcd.clear();
     _lcd.setCursor(0, 0);

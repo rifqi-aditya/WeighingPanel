@@ -8,6 +8,8 @@ public:
     Indicator(uint8_t rxPin, uint8_t txPin);
     void begin(long baudRate = 9600);
     bool update();
+    void requestWeight();
+
     float getWeight() const;
     String getRawData() const;
 

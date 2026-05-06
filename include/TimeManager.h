@@ -10,6 +10,7 @@ public:
     void update();
     void adjust(uint32_t unixTime);
     String getFormattedDateTime(); // Format: DD-MM-YYYY HH:mm
+    String getFullDateTime(); // Format: DD-MM-YYYY HH:mm:ss
     bool isRTCValid() const; // Check if the current time is valid
 
 private:

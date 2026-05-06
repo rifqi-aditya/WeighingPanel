@@ -32,7 +32,7 @@ struct AppConfig {
         subnet("255.255.255.0"),
         weightDecimals(2),
         printerType(0),
-        paperSize(0)
+        paperSize(1)
     {}
 };
 

@@ -11,6 +11,7 @@ public:
     void showDateTime(String dateTime);
     void showWeight(float weight, int decimals = 2);
     void showWaitingData();
+    void showCustomLine2(String text);
     void showMessage(String line1, String line2 = "");
     void clear();
 

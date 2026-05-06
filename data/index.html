@@ -9,219 +9,241 @@
 </head>
 
 <body data-theme="dark">
-    <header>
-        <div class="logo-section">
-            <h1 id="header-pt-name">PT. PANEL TIMBANGAN</h1>
-            <p>Industrial Dashboard v1.0-beta</p>
-        </div>
-        <div style="display: flex; align-items: center;">
+<header>
+    <div class="logo-section">
+        <h1 id="header-pt-name">PT. PANEL TIMBANGAN</h1>
+        <p>Industrial Dashboard v1.0-beta</p>
+    </div>
+    <div style="display: flex; align-items: center;">
             <span id="ws-status-badge" class="ws-status ws-disconnected">
                 <span class="status-dot"></span>
                 <span class="status-text">WEB DISCONNECTED</span>
             </span>
-            <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
-        </div>
-    </header>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+    </div>
+</header>
 
-    <nav>
-        <button class="nav-btn active" data-tab="dashboard" onclick="showTab('dashboard')">Dashboard</button>
-        <button class="nav-btn" data-tab="history" onclick="showTab('history')">History</button>
-        <button class="nav-btn" data-tab="system" onclick="showTab('system')">Monitoring</button>
-        <button class="nav-btn" data-tab="settings" onclick="showTab('settings')">Settings</button>
-    </nav>
+<nav>
+    <button class="nav-btn active" data-tab="dashboard" onclick="showTab('dashboard')">Dashboard</button>
+    <button class="nav-btn" data-tab="history" onclick="showTab('history')">History</button>
+    <button class="nav-btn" data-tab="system" onclick="showTab('system')">Monitoring</button>
+    <button class="nav-btn" data-tab="settings" onclick="showTab('settings')">Settings</button>
+</nav>
 
-    <main>
-        <!-- TAB MONITORING (BERAT) -->
-        <div id="dashboard" class="tab-content active">
-            <div class="weight-card-container">
-                <div id="weight-overlay" class="disconnected-overlay">
-                    <p>OFFLINE</p>
-                    <p style="font-size: 0.8rem; font-weight: 400; margin-top: 0.5rem;">Websocket Disconnected</p>
+<main>
+    <!-- TAB MONITORING (BERAT) -->
+    <div id="dashboard" class="tab-content active">
+        <div class="weight-card-container">
+            <div id="weight-overlay" class="disconnected-overlay">
+                <p>OFFLINE</p>
+                <p style="font-size: 0.8rem; font-weight: 400; margin-top: 0.5rem;">Websocket Disconnected</p>
+            </div>
+            <div class="weight-card">
+                <div class="weight-label">Berat Bersih</div>
+                <div>
+                    <span class="weight-value" id="weight-display">0.00</span>
+                    <span class="weight-unit">kg</span>
                 </div>
-                <div class="weight-card">
-                    <div class="weight-label">Berat Bersih</div>
-                    <div>
-                        <span class="weight-value" id="weight-display">0.00</span>
-                        <span class="weight-unit">kg</span>
+                
+                <!-- Extra values for Command Mode -->
+                <div id="command-values-grid" class="command-grid" style="display: none;">
+                    <div class="command-item">
+                        <span class="command-label">TARE</span>
+                        <span class="command-val" id="val-tare">0.00</span>
                     </div>
-                    <button class="btn-print" onclick="printTicket()">🖨️ Cetak Tiket</button>
+                    <div class="command-item">
+                        <span class="command-label">GROSS</span>
+                        <span class="command-val" id="val-gross">0.00</span>
+                    </div>
+                </div>
+
+                <button class="btn-print" onclick="printTicket()">🖨️ Cetak Tiket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB HISTORY -->
+    <div id="history" class="tab-content">
+        <div class="settings-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="color: var(--accent-color);">Weighing Log</h2>
+                <button class="nav-btn" onclick="clearHistory()"
+                        style="background: #ef4444; border-color: #ef4444; color: white;">Clear All
+                </button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                    <thead>
+                    <tr
+                            style="border-bottom: 1px solid var(--border-color); text-align: left; color: var(--text-secondary);">
+                        <th style="padding: 0.75rem;">Timestamp</th>
+                        <th style="padding: 0.75rem;">Weight</th>
+                    </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                    <!-- Data injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Removed Console Tab -->
+
+    <!-- TAB SYSTEM (HEALTH MONITOR) -->
+    <div id="system" class="tab-content">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Chip Temperature</div>
+                <div class="stat-value" id="stat-temp">-- °C</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Reset Reason</div>
+                <div class="stat-value" id="stat-reset" style="font-size: 0.9rem;">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">WiFi Signal</div>
+                <div class="stat-value" id="stat-rssi">-- dBm</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Memory Usage</div>
+                <div class="stat-value" id="stat-heap">-- / -- KB</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Uptime</div>
+                <div class="stat-value" id="stat-uptime">--</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">CPU Speed</div>
+                <div class="stat-value" id="stat-freq">-- MHz</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Indicator Link</div>
+                <div class="stat-value" id="stat-indicator">--</div>
+            </div>
+            <div class="stat-card" style="grid-column: span 2;">
+                <div class="stat-label">Local IP Address</div>
+                <div class="stat-value" id="stat-ip" style="color: var(--accent-color); font-family: monospace;">
+                    --.---.---.---
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- TAB HISTORY -->
-        <div id="history" class="tab-content">
-            <div class="settings-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h2 style="color: var(--accent-color);">Weighing Log</h2>
-                    <button class="nav-btn" onclick="clearHistory()"
-                        style="background: #ef4444; border-color: #ef4444; color: white;">Clear All</button>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
-                        <thead>
-                            <tr
-                                style="border-bottom: 1px solid var(--border-color); text-align: left; color: var(--text-secondary);">
-                                <th style="padding: 0.75rem;">Timestamp</th>
-                                <th style="padding: 0.75rem;">Weight</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-table-body">
-                            <!-- Data injected here -->
-                        </tbody>
-                    </table>
-                </div>
+    <!-- TAB SETTINGS -->
+    <div id="settings" class="tab-content">
+        <div class="settings-card">
+            <h2 style="margin-bottom: 1.5rem;">Konfigurasi Tiket</h2>
+            <div class="form-group">
+                <label>Nama PT (Akan tampil di header & tiket)</label>
+                <input type="text" id="input-pt-name" placeholder="Contoh: PT. MAJU JAYA INDONESIA">
             </div>
-        </div>
-
-        <!-- Removed Console Tab -->
-
-        <!-- TAB SYSTEM (HEALTH MONITOR) -->
-        <div id="system" class="tab-content">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Chip Temperature</div>
-                    <div class="stat-value" id="stat-temp">-- °C</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Reset Reason</div>
-                    <div class="stat-value" id="stat-reset" style="font-size: 0.9rem;">--</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">WiFi Signal</div>
-                    <div class="stat-value" id="stat-rssi">-- dBm</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Memory Usage</div>
-                    <div class="stat-value" id="stat-heap">-- / -- KB</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Uptime</div>
-                    <div class="stat-value" id="stat-uptime">--</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">CPU Speed</div>
-                    <div class="stat-value" id="stat-freq">-- MHz</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Indicator Link</div>
-                    <div class="stat-value" id="stat-indicator">--</div>
-                </div>
-                <div class="stat-card" style="grid-column: span 2;">
-                    <div class="stat-label">Local IP Address</div>
-                    <div class="stat-value" id="stat-ip" style="color: var(--accent-color); font-family: monospace;">
-                        --.---.---.---</div>
-                </div>
+            <div class="form-group">
+                <label>Angka Desimal (Di belakang koma)</label>
+                <select id="input-decimals"
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--bg-color); color: var(--text-color); font-size: 1rem;">
+                    <option value="0">0 Desimal (Contoh: 15 kg)</option>
+                    <option value="1">1 Desimal (Contoh: 15.2 kg)</option>
+                    <option value="2">2 Desimal (Contoh: 15.25 kg)</option>
+                    <option value="3">3 Desimal (Contoh: 15.255 kg)</option>
+                </select>
             </div>
-        </div>
+            <div class="form-group">
+                <label>Ukuran Kertas Printer</label>
+                <select id="input-paper-size"
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--bg-color); color: var(--text-color); font-size: 1rem;">
+                    <option value="0">58mm (Kecil)</option>
+                    <option value="1">80mm (Besar)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Koneksi Printer (Gunakan USB untuk PnP)</label>
+                <select id="input-printer-type"
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--bg-color); color: var(--text-color); font-size: 1rem;">
+                    <option value="0">Serial RS232 / TTL (Default)</option>
+                    <option value="1">USB Native (Plug and Play)</option>
+                </select>
+            </div>
+            <button class="btn-primary" onclick="saveSettings()" style="margin-bottom: 1rem;">Simpan
+                Perubahan
+            </button>
+            <div style="border-top: 1px solid var(--border-color); margin: 1.5rem 0; padding-top: 1.5rem;">
+                <h2 style="margin-bottom: 1rem;">Konfigurasi WiFi</h2>
+                <div class="form-group">
+                    <label>SSID (Nama WiFi)</label>
+                    <input type="text" id="input-wifi-ssid" placeholder="Contoh: Kantor_WiFi">
+                </div>
+                <div class="form-group">
+                    <label>Password WiFi</label>
+                    <input type="password" id="input-wifi-pass" placeholder="********">
+                </div>
+                <button class="btn-primary" onclick="saveWiFi()" style="background: #6366f1;">Update WiFi &
+                    Restart
+                </button>
 
-        <!-- TAB SETTINGS -->
-        <div id="settings" class="tab-content">
-            <div class="settings-card">
-                <h2 style="margin-bottom: 1.5rem;">Konfigurasi Tiket</h2>
-                <div class="form-group">
-                    <label>Nama PT (Akan tampil di header & tiket)</label>
-                    <input type="text" id="input-pt-name" placeholder="Contoh: PT. MAJU JAYA INDONESIA">
-                </div>
-                <div class="form-group">
-                    <label>Angka Desimal (Di belakang koma)</label>
-                    <select id="input-decimals" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--bg-color); color: var(--text-color); font-size: 1rem;">
-                        <option value="0">0 Desimal (Contoh: 15 kg)</option>
-                        <option value="1">1 Desimal (Contoh: 15.2 kg)</option>
-                        <option value="2">2 Desimal (Contoh: 15.25 kg)</option>
-                        <option value="3">3 Desimal (Contoh: 15.255 kg)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Ukuran Kertas Printer</label>
-                    <select id="input-paper-size" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--bg-color); color: var(--text-color); font-size: 1rem;">
-                        <option value="0">58mm (Kecil)</option>
-                        <option value="1">80mm (Besar)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Koneksi Printer (Gunakan USB untuk PnP)</label>
-                    <select id="input-printer-type" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; background: var(--bg-color); color: var(--text-color); font-size: 1rem;">
-                        <option value="0">Serial RS232 / TTL (Default)</option>
-                        <option value="1">USB Native (Plug and Play)</option>
-                    </select>
-                </div>
-                <button class="btn-primary" onclick="saveSettings()" style="margin-bottom: 1rem;">Simpan
-                    Perubahan</button>
-                <div style="border-top: 1px solid var(--border-color); margin: 1.5rem 0; padding-top: 1.5rem;">
-                    <h2 style="margin-bottom: 1rem;">Konfigurasi WiFi</h2>
-                    <div class="form-group">
-                        <label>SSID (Nama WiFi)</label>
-                        <input type="text" id="input-wifi-ssid" placeholder="Contoh: Kantor_WiFi">
-                    </div>
-                    <div class="form-group">
-                        <label>Password WiFi</label>
-                        <input type="password" id="input-wifi-pass" placeholder="********">
-                    </div>
-                    <button class="btn-primary" onclick="saveWiFi()" style="background: #6366f1;">Update WiFi &
-                        Restart</button>
-
-                    <div
+                <div
                         style="margin-top: 1.5rem; padding: 1rem; border: 1px dashed var(--border-color); border-radius: 0.5rem;">
-                        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                            <input type="checkbox" id="input-static-enable" style="width: auto; margin-right: 0.5rem;">
-                            <label for="input-static-enable" style="margin-bottom: 0;">Gunakan IP Statis (STA
-                                Mode)</label>
+                    <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                        <input type="checkbox" id="input-static-enable" style="width: auto; margin-right: 0.5rem;">
+                        <label for="input-static-enable" style="margin-bottom: 0;">Gunakan IP Statis (STA
+                            Mode)</label>
+                    </div>
+                    <div id="static-ip-fields" style="display: none;">
+                        <div class="form-group">
+                            <label>Static IP Address</label>
+                            <input type="text" id="input-static-ip" placeholder="192.168.1.100">
                         </div>
-                        <div id="static-ip-fields" style="display: none;">
-                            <div class="form-group">
-                                <label>Static IP Address</label>
-                                <input type="text" id="input-static-ip" placeholder="192.168.1.100">
-                            </div>
-                            <div class="form-group">
-                                <label>Gateway</label>
-                                <input type="text" id="input-static-gw" placeholder="192.168.1.1">
-                            </div>
-                            <div class="form-group">
-                                <label>Subnet Mask</label>
-                                <input type="text" id="input-static-sn" placeholder="255.255.255.0">
-                            </div>
+                        <div class="form-group">
+                            <label>Gateway</label>
+                            <input type="text" id="input-static-gw" placeholder="192.168.1.1">
+                        </div>
+                        <div class="form-group">
+                            <label>Subnet Mask</label>
+                            <input type="text" id="input-static-sn" placeholder="255.255.255.0">
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div style="border-top: 1px solid var(--border-color); margin: 1.5rem 0; padding-top: 1.5rem;">
-                    <label
+            <div style="border-top: 1px solid var(--border-color); margin: 1.5rem 0; padding-top: 1.5rem;">
+                <label
                         style="display: block; font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Hardware
-                        Clock (RTC)</label>
-                    <div
+                    Clock (RTC)</label>
+                <div
                         style="background: var(--bg-color); padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem; text-align: center; border: 1px solid var(--border-color);">
                         <span style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Waktu
                             RTC Saat Ini:</span>
-                        <p id="rtc-time-display"
-                            style="font-size: 1.5rem; font-weight: 800; color: var(--accent-color); font-family: monospace; margin-top: 0.25rem;">
-                            --:--:--</p>
-                    </div>
-                    <button class="btn-primary" onclick="syncTime()"
-                        style="background: var(--card-bg); border: 1px solid var(--accent-color); color: var(--accent-color);">Sync
-                        Time via Browser</button>
+                    <p id="rtc-time-display"
+                       style="font-size: 1.5rem; font-weight: 800; color: var(--accent-color); font-family: monospace; margin-top: 0.25rem;">
+                        --:--:--</p>
                 </div>
-
-                <div
-                    style="border-top: 1px solid var(--border-color); margin: 1.5rem 0; padding-top: 1.5rem; text-align: center;">
-                    <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Firmware Update
-                    </p>
-                    <a href="/update" target="_blank"
-                        style="color: var(--accent-color); text-decoration: none; font-weight: bold;">Buka Portal OTA
-                        Update →</a>
-                </div>
-
-                <p id="save-status" style="margin-top: 1rem; text-align: center; font-size: 0.875rem;"></p>
+                <button class="btn-primary" onclick="syncTime()"
+                        style="background: var(--card-bg); border: 1px solid var(--accent-color); color: var(--accent-color);">
+                    Sync
+                    Time via Browser
+                </button>
             </div>
+
+            <div
+                    style="border-top: 1px solid var(--border-color); margin: 1.5rem 0; padding-top: 1.5rem; text-align: center;">
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Firmware Update
+                </p>
+                <a href="/update" target="_blank"
+                   style="color: var(--accent-color); text-decoration: none; font-weight: bold;">Buka Portal OTA
+                    Update →</a>
+            </div>
+
+            <p id="save-status" style="margin-top: 1rem; text-align: center; font-size: 0.875rem;"></p>
         </div>
-    </main>
+    </div>
+</main>
 
-    <footer>
-        &copy; 2026 CV. Duta Surya | Industrial Weighing Solution
-    </footer>
+<footer>
+    &copy; 2026 CV. Duta Surya | Industrial Weighing Solution
+</footer>
 
+    <div id="toast-container" class="toast-container"></div>
     <script src="app.js"></script>
-
 </body>
 
 </html>
